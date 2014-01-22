@@ -1,0 +1,127 @@
+
+#
+# Identity
+#
+
+name="Jonas Rabbe"
+mail="jonas@radius.com"
+
+#
+# Misc.
+#
+
+clever_source() {
+    [[ -f "${1}" ]] && source "${1}"
+}
+
+#
+# Utilities
+#
+
+mkcd() {
+    mkdir "${1}" && cd "${1}"
+}
+
+unpack() {
+    local file="${1}"
+
+    case "${file}" in
+        *.tar)
+            tar xvf "${file}"
+            ;;
+        *.tar.gz|*.tgz|*.tar.Z)
+            tar zxfv "${file}"
+            ;;
+        *.tar.bz2|*.tbz2)
+            tar jxvf "${file}"
+            ;;
+        *.zip|*.ZIP)
+            unzip "${file}"
+            ;;
+        *.rar|*.RAR)
+            unrar x "${file}"
+            ;;
+        *)
+            echo "Unable to unpack file ..."
+            ;;
+    esac
+}
+
+mktar() {
+    tar jcvf "${1%%/}.tar.bz2" "${1%%/}/"
+}
+
+#
+# Variables
+#
+
+export HISTIGNORE="&:exit:logout:cd *:ls"
+export EDITOR="subl -n -w"
+export BROWSER="chrome"
+export LESSCHARSET="UTF-8"
+
+clever_source "~/.aws-settings"
+
+#
+# Setup virtualenvwrapper
+#
+
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/repo
+source /usr/local/bin/virtualenvwrapper.sh
+
+#
+# Aliases
+#
+
+alias grep='grep --color=auto'
+alias ls='ls -G'
+alias ll='ls -lFha'
+alias lv='ls -lFhA'
+alias l='ls -lh'
+
+alias pp='ps -aef|grep'
+
+alias screen="screen -U"
+alias g='grep'
+alias lg='l|g'
+
+alias chrome='open /Applications/Google\ Chrome.app'
+
+#
+# Path
+#
+
+PATH=/usr/local/bin:$PATH
+PATH=/Users/jonas/bin:.:$PATH
+PATH=/Users/jonas/Documents/Tools:$PATH
+export PATH
+
+
+#
+# Terminal
+#
+
+if [[ "${TERM}" == "xterm" ]] ; then
+    export TERM="xterm-256color"
+fi
+
+#
+# PS1
+#
+
+if [[ ${EUID} == 0 ]] ; then
+    PS1='\[\033[00;31m\][\u@\h\[\033[00;33m\] :: \[\033[00;36m\]\w\[\033[38;5;77m\]\[\033[00m\]\[\033[00;31m\]] \[\033[00;33m\]\\$\[\033[00m\] '
+else
+    PS1='\[\033[00;36m\]\u\[\033[00;32m\]@\[\033[00;36m\]\h\[\033[00;32m\]\[\033[00;33m\] :: \[\033[00;36m\]\w\[\033[38;5;77m\]\[\033[00m\]\[\033[00;32m\] \[\033[00;33m\]\\$\[\033[00m\] '
+fi
+
+#
+# Bash completion
+#
+
+for file in ~/.bash_completion.d/* ; do
+    clever_source "${file}"
+done
+
+

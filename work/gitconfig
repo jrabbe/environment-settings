@@ -1,0 +1,75 @@
+[user]
+    name = Jonas Rabbe
+    email = jonas@radius.com
+
+[commit]
+    template = ~/.commit-template
+
+[color]
+    ui = auto
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+
+[color]
+    ui = true
+[color "diff"]
+    whitespace = red reverse
+[core]
+    whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+
+[alias]
+    st = status
+    ci = commit
+    ca = commit --amend
+    can = commit --amend --no-edit
+    br = branch
+    co = checkout
+    df = diff
+    dc = diff --cached
+    lg = log -p
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+    ll = log --pretty=format:'%C(yellow)%h%Creset %C(green)%cd%Creset%x09%C(yellow)%d%Creset %s [%C(red)%an%Creset]' --graph --date=relative --decorate
+    ls = ls-files
+    ign = ls-files -o -i --exclude-standard
+    sf = show --decorate --pretty=short --name-only
+    ss = show --stat
+    sc = log --max-count=1 --pretty=fuller --decorate
+    pr = pull --rebase
+    fp = fetch -p
+    merge-theirs = merge -s recursive -X theirs --no-ff
+
+[push]
+    default = current
+
+[merge]
+    tool = Kaleidoscope
+
+[mergetool]
+    prompt = false
+
+[diff]
+    tool = Kaleidoscope
+
+[difftool]
+    prompt = false
+
+
+[branch]
+    autosetuprebase = always
+[difftool "Kaleidoscope"]
+    cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+[mergetool "Kaleidoscope"]
+    cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+    trustExitCode = true
